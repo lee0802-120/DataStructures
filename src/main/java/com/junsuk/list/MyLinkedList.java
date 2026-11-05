@@ -19,7 +19,9 @@ public class MyLinkedList<E> implements ListInterface<E> {
             Node<E> newNode = new Node<>(x, prevNode.next);
             prevNode.next = newNode;
             numItems++;
-        } else {/* 예외 처리 */}
+        } else {
+            throw new ArrayIndexOutOfBoundsException("The index value has been exceeded.");
+        }
     }
 
     public void append(E x) {
@@ -51,6 +53,8 @@ public class MyLinkedList<E> implements ListInterface<E> {
                 prevNode = currNode.next;
                 numItems--;
                 return true;
+            } else {
+                return false;
             }
         }
         return false; // 이부분이 뭔가 이상함.
@@ -88,6 +92,23 @@ public class MyLinkedList<E> implements ListInterface<E> {
     public void clear() {
         numItems = 0;
         head = new Node(null, null);
+    }
+
+    public MyLinkedList<E> subList(int from, int to) {
+        if (from < 0 || to > numItems - 1 || from > to)
+            throw new IndexOutOfBoundsException("from: " + from + "to: " + to);
+
+        MyLinkedList<E> result = new MyLinkedList<>(); // 새 객체를 만든다.
+        Node<E> curr = getNode(from);
+        for (int i = from; i <= to; i++) {
+            result.append(curr.item);
+            curr = curr.next;
+        }
+        return result;
+    }
+
+    public MyLinkedList<E> cloneList() {
+        return this.subList(0, numItems - 1);
     }
 
     private Node<E> getNode(int index) {

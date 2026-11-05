@@ -2,7 +2,7 @@ package com.junsuk.list;
 
 import com.junsuk.vo.ListInterface;
 
-public class MyArrayList<E> implements ListInterface<E> {
+public class MyArrayList<E extends Comparable<E>> implements ListInterface<E> {
     private E[] item;
     private int numItems;
     private static final int DEFAULT_CAPACITY = 64;
@@ -71,7 +71,7 @@ public class MyArrayList<E> implements ListInterface<E> {
         if (i >= 0 && i <= numItems-1)
             item[i] = x;
         else {
-            /* 에러 처리 */
+            throw new ArrayIndexOutOfBoundsException("인덱스를 초과 했습니다.");
         }
     }
 
@@ -94,6 +94,49 @@ public class MyArrayList<E> implements ListInterface<E> {
     public void clear() {
         item = (E[]) new Object[item.length];
         numItems = 0;
+    }
+
+    public int getMax() {
+        if (numItems == 0) return NOT_FOUND;
+
+        E max = item[0];
+        int idx = 0;
+
+        for (int i = 0; i < numItems; i++) {
+            if (item[i].compareTo(max) > 0) {
+                max = item[i];
+                idx = i;
+            }
+        }
+        return idx;
+    }
+
+    public int getMin() {
+        E min = item[0];
+        int idx = 0;
+        for (int i = 0; i < numItems; i++) {
+            if (item[i].compareTo(min) < 0) {
+                min = item[i];
+                idx = i;
+            }
+        }
+        return idx;
+    }
+
+    public MyArrayList<E> subList(int from, int to) {
+        if (from < 0 || to > numItems - 1 || from > to)
+            throw new IndexOutOfBoundsException("from: " + from + "to: " + to);
+
+        MyArrayList<E> result = new MyArrayList<>();
+        for (int i = from; i <= to; i++) {
+            result.append(item[i]);
+        }
+
+        return result;
+    }
+
+    public MyArrayList<E> cloneList() {
+        return this.subList(0, numItems - 1);
     }
 
     public String toString() {
