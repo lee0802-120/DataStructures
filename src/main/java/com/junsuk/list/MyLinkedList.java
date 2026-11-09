@@ -57,7 +57,7 @@ public class MyLinkedList<E> implements ListInterface<E> {
                 return false;
             }
         }
-        return false; // 이부분이 뭔가 이상함.
+        return false;
     }
 
     public E get(int i) {
@@ -69,7 +69,9 @@ public class MyLinkedList<E> implements ListInterface<E> {
     public void set(int i, E x) {
         if (i >= 0 && i <= numItems - 1)
             getNode(i).item = x;
-        else { /* 예외 처리 */ }
+        else {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     public int indexOf(E x) {
