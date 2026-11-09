@@ -101,7 +101,6 @@ public class MyArrayList<E extends Comparable<E>> implements ListInterface<E> {
 
         E max = item[0];
         int idx = 0;
-
         for (int i = 0; i < numItems; i++) {
             if (item[i].compareTo(max) > 0) {
                 max = item[i];
@@ -112,6 +111,8 @@ public class MyArrayList<E extends Comparable<E>> implements ListInterface<E> {
     }
 
     public int getMin() {
+        if (numItems == 0) return NOT_FOUND;
+
         E min = item[0];
         int idx = 0;
         for (int i = 0; i < numItems; i++) {

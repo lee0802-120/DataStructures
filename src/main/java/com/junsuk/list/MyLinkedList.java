@@ -3,7 +3,7 @@ package com.junsuk.list;
 import com.junsuk.vo.ListInterface;
 import com.junsuk.vo.Node;
 
-public class MyLinkedList<E> implements ListInterface<E> {
+public class MyLinkedList<E extends Comparable<E>> implements ListInterface<E> {
     private Node<E> head;
     private int numItems;
     private final int NOT_FOUND = -1;
@@ -97,7 +97,7 @@ public class MyLinkedList<E> implements ListInterface<E> {
     }
 
     public MyLinkedList<E> subList(int from, int to) {
-        if (from < 0 || to > numItems - 1 || from > to)
+        if (from < 0 || to > numItems - 1 || from > to) // 범위를 벗어나면 예외 처리.
             throw new IndexOutOfBoundsException("from: " + from + "to: " + to);
 
         MyLinkedList<E> result = new MyLinkedList<>(); // 새 객체를 만든다.
@@ -109,6 +109,40 @@ public class MyLinkedList<E> implements ListInterface<E> {
         return result;
     }
 
+    public int getMax() {
+        if (numItems == 0) return NOT_FOUND;
+
+        Node<E> curr = head.next; // 더미 다음 = 0번 노드
+        E max = curr.item; // 0번 원소를 일단 최대값으로
+        int idx = 0;
+
+        for (int i = 0; i < numItems; i++) {
+            if (curr.item.compareTo(max) > 0) { // curr.item > max
+                max = curr.item;
+                idx = i; // 노드가 아니라 '몇 번쨰인지'를 기억
+            }
+            curr = curr.next; // 다음 노드로 이동 (빠뜨리면 같은 노드만 봄)
+        }
+        return idx;
+    }
+
+    public int getMin() {
+        if (numItems == 0) return NOT_FOUND; // numItems(인덱스) 0이라면 NOT_FOUND 값을 반환
+
+        Node<E> curr = head.next;
+        E min = curr.item;
+        int idx = 0;
+
+        for (int i = 0; i < numItems; i++) {
+            if (curr.item.compareTo(min) < 0) {
+                min = curr.item;
+                idx = i;
+            }
+            curr = curr.next;
+        }
+        return idx;
+    }
+
     public MyLinkedList<E> cloneList() {
         return this.subList(0, numItems - 1);
     }
@@ -116,7 +150,7 @@ public class MyLinkedList<E> implements ListInterface<E> {
     private Node<E> getNode(int index) {
         if (index >= -1 && index <= numItems - 1) {
             Node<E> currNode = head;
-            for (int i = 0; i < index; i++)
+            for (int i = 0; i <= index; i++)
                 currNode = currNode.next;
             return currNode;
         } else
