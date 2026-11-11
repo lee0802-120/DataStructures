@@ -1,7 +1,5 @@
 package com.junsuk.list;
 
-import com.junsuk.vo.ListInterface;
-
 public class MyArrayList<E extends Comparable<E>> implements ListInterface<E> {
     private E[] item;
     private int numItems;

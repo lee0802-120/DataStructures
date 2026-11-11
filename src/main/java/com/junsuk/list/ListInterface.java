@@ -1,4 +1,4 @@
-package com.junsuk.vo;
+package com.junsuk.list;
 
 public interface ListInterface<E> {
     public void add(int i, E x);

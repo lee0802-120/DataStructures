@@ -1,8 +1,5 @@
 package com.junsuk.list;
 
-import com.junsuk.vo.ListInterface;
-import com.junsuk.vo.Node;
-
 public class MyLinkedList<E extends Comparable<E>> implements ListInterface<E> {
     private Node<E> head;
     private int numItems;
